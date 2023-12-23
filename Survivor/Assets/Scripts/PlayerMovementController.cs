@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
@@ -79,16 +77,15 @@ public class PlayerMovementController : MonoBehaviour
         oldPosition = transform.position;
 
         ConsoleUtiltiies.ClearLogConsole();
-        print("speed: " + speed.ToString("F2"));
         print("speed natural: " + speed);
 
-        //if (lerpedPlayerSpeed >= 0.2f)
-        //{
-        //    IsRunning = true;
-        //}
-        //else
-        //{
-        //    IsRunning = false;
-        //}
+        if (speed >= 0.3f)
+        {
+            IsRunning = true;
+        }
+        else
+        {
+            IsRunning = false;
+        }
     }
 }
