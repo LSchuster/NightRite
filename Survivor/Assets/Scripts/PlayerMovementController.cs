@@ -1,91 +1,107 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    public float PlayerSpeed = 2.0f;
-    public float PlayerLerpSpeed = 1f;
-    public float RotationSpeed = 10f;
-    public float JumpHeight = 1.0f;
-    public float GravityValue = -9.81f;
-    public bool IsRunning;
-    public bool IsGrounded;
-    public bool IsStopped;
-    public bool IsStopping
-    {
-        get
-        {
-            if (isStopping)
-            {
-                isStopping = false;
-                return true;
-            }
-            return isStopping;
-        }
-        set { isStopping = value; }
-    }
-    private bool isStopping = false;
+    public float PlayerSpeed = 80f;
+    public float JumpForce = 4;
+    public float JumpCooldowsInSeconds;
+    public Animator animator;
+    public LayerMask layermask;
 
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    private Vector3 oldPosition;
+    private Rigidbody rb;
+
+    private float lerpedVerticalAxis = 0f;
+    private float lerpedHorizontalAxis = 0f;
+    public bool isGrounded;
+    public float Grounde;
+    private bool canJump = true;
 
     private void Start()
     {
-        controller = gameObject.GetComponent<CharacterController>();
-        oldPosition = transform.position;
+        rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    private void FixedUpdate()
     {
-        CalculateSpeed();
+        IsGrounded();
+        Jump();
+        Move();
+    }
 
-        IsGrounded = controller.isGrounded;
-        if (IsGrounded && playerVelocity.y < 0)
+    private void Move()
+    {
+        float verticalAxis = Input.GetAxis("Vertical");
+        float horizontalAxis = Input.GetAxis("Horizontal");
+
+        if (verticalAxis == 0)
         {
-            playerVelocity.y = 0f;
+            lerpedVerticalAxis = Mathf.Lerp(lerpedVerticalAxis, 0, 0.25f);
         }
-
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-
-        if (move != Vector3.zero)
+        else if (verticalAxis > 0)
         {
-            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, move, RotationSpeed * Time.deltaTime);
-            IsStopped = false;
+            lerpedVerticalAxis = Mathf.Lerp(lerpedVerticalAxis, 1, 0.08f);
         }
         else
         {
-            IsStopping = true;
+            lerpedVerticalAxis = Mathf.Lerp(lerpedVerticalAxis, -1, 0.08f);
         }
 
-        controller.Move(move * Time.deltaTime * PlayerSpeed);
-
-        if (Input.GetButtonDown("Jump") && IsGrounded)
+        if (horizontalAxis == 0)
         {
-            playerVelocity.y += Mathf.Sqrt(JumpHeight * -3.0f * GravityValue);
+            lerpedHorizontalAxis = Mathf.Lerp(lerpedHorizontalAxis, 0, 0.25f);
         }
-
-        playerVelocity.y += GravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
-    }
-
-    private void CalculateSpeed()
-    {
-        var speed = Vector3.Distance(oldPosition, transform.position) * 100f;
-        oldPosition = transform.position;
-
-        ConsoleUtiltiies.ClearLogConsole();
-        print("speed natural: " + speed);
-
-        if (speed >= 0.3f)
+        else if (horizontalAxis > 0)
         {
-            IsRunning = true;
+            lerpedHorizontalAxis = Mathf.Lerp(lerpedHorizontalAxis, 1, 0.08f);
         }
         else
         {
-            IsRunning = false;
+            lerpedHorizontalAxis = Mathf.Lerp(lerpedHorizontalAxis, -1, 0.08f);
         }
+
+        Vector3 movement = transform.forward * verticalAxis + transform.right * horizontalAxis;
+        movement.Normalize();
+
+        transform.position += movement * 0.04f * PlayerSpeed * Time.deltaTime;
+
+        animator.SetFloat("Vertical", lerpedVerticalAxis);
+        animator.SetFloat("Horizontal", lerpedHorizontalAxis);
+    }
+
+    private void Jump()
+    {
+        if (Input.GetKey(KeyCode.Space) && isGrounded && canJump)
+        {
+            animator.SetTrigger("Jump");
+            canJump = false;
+            StartCoroutine(JumpCooldown());
+        }
+    }
+
+    private void IsGrounded()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, Grounde))
+        {
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Walkable"))
+            {
+                isGrounded = true;
+            }
+            else
+            {
+                isGrounded = false;
+            }
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
+    private IEnumerator JumpCooldown()
+    {
+        yield return new WaitForSeconds(JumpCooldowsInSeconds);
+        canJump = true;
     }
 }

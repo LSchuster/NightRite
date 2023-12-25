@@ -4,27 +4,36 @@ using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    public float YHightAbovePlayer = 2f;
-    public float ZDistanceToPlayer = -5f;
-    public float CameraFollowSpeed = 2;
+    public PlayerMovementController playerMovementController;
+    public float Sensivity = 500f;
+    public float ClampAngle = 85f;
 
-    private Camera camera;
+    private float verticalRotation;
+    private float horizontalRotation;
 
-    void Start()
+    private void Start()
     {
-        camera = Camera.main;
-    }
-    
-    void Update()
-    {
-        camera.transform.position = Vector3.Lerp(camera.transform.position, CalculateWantedPostion(), CameraFollowSpeed * Time.deltaTime);
+        verticalRotation = transform.localEulerAngles.x;
+        horizontalRotation = transform.eulerAngles.y;
     }
 
-    private Vector3 CalculateWantedPostion()
+    private void Update()
     {
-        return new Vector3(
-            transform.position.x,
-            transform.position.y + YHightAbovePlayer,
-            transform.position.z + ZDistanceToPlayer);
+        Look();
+        Debug.DrawLine(transform.position, transform.forward * 2, Color.red);
+    }
+
+    private void Look()
+    {
+        float mouseVertical = -Input.GetAxis("Mouse Y");
+        float mouseHorizontal = Input.GetAxis("Mouse X");
+
+        verticalRotation += mouseVertical * Sensivity * Time.deltaTime;
+        horizontalRotation += mouseHorizontal * Sensivity * Time.deltaTime;
+
+        verticalRotation = Mathf.Clamp(verticalRotation, -ClampAngle, ClampAngle);
+
+        transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+        playerMovementController.transform.rotation = Quaternion.Euler(0f, horizontalRotation, 0f);
     }
 }
