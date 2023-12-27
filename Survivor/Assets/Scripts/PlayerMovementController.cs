@@ -85,18 +85,18 @@ public class PlayerMovementController : MonoBehaviour
             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Walkable"))
             {
                 isGrounded = true;
-                rb.isKinematic = true;
+                //rb.isKinematic = true;
             }
             else
             {
                 isGrounded = false;
-                rb.isKinematic = false;
+                //rb.isKinematic = false;
             }
         }
         else
         {
             isGrounded = false;
-            rb.isKinematic = false;
+            //rb.isKinematic = false;
         }
     }
 
