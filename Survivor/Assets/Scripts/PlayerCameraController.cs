@@ -14,7 +14,7 @@ public class PlayerCameraController : MonoBehaviour
         Cursor.visible = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector3 viewDirection = Player.position - new Vector3(transform.position.x, Player.position.y, transform.position.z);
         LookAtTransform.forward = viewDirection.normalized;
