@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerMovementController : MonoBehaviour
 {
     public float PlayerSpeed = 80f;
+    public float PlayerSprintSpeedMultiplier = 2f;
     public float JumpForce = 4;
     public float JumpCooldowsInSeconds;
     public Animator animator;
@@ -56,10 +57,23 @@ public class PlayerMovementController : MonoBehaviour
         animator.SetFloat("Vertical", lerpedVerticalAxis);
         animator.SetFloat("Horizontal", lerpedHorizontalAxis);
 
+        float speedMultiplier = 1f;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speedMultiplier = PlayerSprintSpeedMultiplier;
+            animator.SetBool("Floating", true);
+        }
+        else
+        {
+            speedMultiplier = 1f;
+            animator.SetBool("Floating", false);
+        }
+
         Vector3 movement = transform.forward * verticalAxis + transform.right * horizontalAxis;
         movement.Normalize();
 
-        transform.position += movement * 0.04f * PlayerSpeed * Time.deltaTime;
+        transform.position += movement * 0.04f * PlayerSpeed * speedMultiplier * Time.deltaTime;
     }
 
     private void Jump()
