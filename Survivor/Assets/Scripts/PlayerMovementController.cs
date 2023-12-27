@@ -10,11 +10,9 @@ public class PlayerMovementController : MonoBehaviour
     public LayerMask layermask;
 
     private Rigidbody rb;
-
     private float lerpedVerticalAxis = 0f;
     private float lerpedHorizontalAxis = 0f;
-    public bool isGrounded;
-    public float Grounde;
+    private bool isGrounded;
     private bool canJump = true;
 
     private void Start()
@@ -82,20 +80,23 @@ public class PlayerMovementController : MonoBehaviour
     private void IsGrounded()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, Grounde))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.1f))
         {
             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Walkable"))
             {
                 isGrounded = true;
+                rb.isKinematic = true;
             }
             else
             {
                 isGrounded = false;
+                rb.isKinematic = false;
             }
         }
         else
         {
             isGrounded = false;
+            rb.isKinematic = false;
         }
     }
 

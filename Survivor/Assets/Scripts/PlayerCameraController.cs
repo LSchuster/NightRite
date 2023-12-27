@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    public Transform Orientation;
+    public Transform LookAtTransform;
     public Transform Player;
     public Transform PlayerObject;
 
@@ -17,7 +17,7 @@ public class PlayerCameraController : MonoBehaviour
     private void Update()
     {
         Vector3 viewDirection = Player.position - new Vector3(transform.position.x, Player.position.y, transform.position.z);
-        Orientation.forward = viewDirection.normalized;
+        LookAtTransform.forward = viewDirection.normalized;
 
         if (viewDirection != Vector3.zero)
         {
