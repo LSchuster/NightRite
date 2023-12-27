@@ -16,10 +16,10 @@ public class PlayerMovementIKController : MonoBehaviour
 
     private void OnAnimatorIK(int layerIndex)
     {
-        animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, layerIndex);
-        animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, layerIndex);
+        //animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, layerIndex);
+        //animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, layerIndex);
 
-        // Shoot Ray
+        //Ray ray = new Ray(RightFootTransform.position + Vector3.up, transform.forward);
 
 
     }

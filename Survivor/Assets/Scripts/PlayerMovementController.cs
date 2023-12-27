@@ -80,7 +80,7 @@ public class PlayerMovementController : MonoBehaviour
     private void IsGrounded()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.1f))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.03f))
         {
             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Walkable"))
             {
