@@ -17,7 +17,12 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            animator.SetTrigger("Attack");
+            animator.SetTrigger("Attack01");
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            animator.SetTrigger("Attack02");
         }
     }
 }
