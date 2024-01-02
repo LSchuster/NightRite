@@ -2,11 +2,16 @@ using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
+    public Camera PlayerCamera;
     public Transform LookAtTransform;
-    public Transform Player;
-    public Transform PlayerObject;
-
     public float RotationSpeed;
+
+    private PlayerMoveController _moveController;
+
+    private void Awake()
+    {
+        _moveController = GetComponent<PlayerMoveController>();
+    }
 
     private void Start()
     {
@@ -16,12 +21,12 @@ public class PlayerCameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 viewDirection = Player.position - new Vector3(transform.position.x, Player.position.y, transform.position.z);
+        Vector3 viewDirection = transform.position - new Vector3(PlayerCamera.transform.position.x, transform.position.y, PlayerCamera.transform.position.z);
         LookAtTransform.forward = viewDirection.normalized;
 
-        if (viewDirection != Vector3.zero)
+        if (viewDirection != Vector3.zero && _moveController.IsMoving)
         {
-            PlayerObject.forward = Vector3.Slerp(PlayerObject.forward, viewDirection.normalized, RotationSpeed * Time.deltaTime);
+            transform.forward = Vector3.Slerp(transform.forward, viewDirection.normalized, RotationSpeed * Time.deltaTime);
         }
     }
 }
