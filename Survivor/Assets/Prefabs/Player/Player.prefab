@@ -1274,6 +1274,7 @@ Transform:
   - {fileID: 337565940080246301}
   - {fileID: 7765372433986312930}
   - {fileID: 7577295346859404118}
+  - {fileID: 1933067327428556313}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8175259340260696076
@@ -1343,10 +1344,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 1.9280169
+  m_Radius: 0.21611887
+  m_Height: 1.7330508
   m_Direction: 1
-  m_Center: {x: 0, y: 1.0359915, z: 0}
+  m_Center: {x: -0.0008119345, y: 0.9385085, z: -0.0008046031}
 --- !u!114 &3958575876399281165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1373,11 +1374,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SprintMultiplier: 1.3
+  JumpForce: 1400
+  JumpCooldownInSeconds: 1
   AnimatorWalkDampTime: 0.1
   CrouchKey: 306
   SprintKey: 304
   JumpKey: 32
+  IsGroundedSource: {fileID: 1933067327428556313}
+  GroundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  IsGroundedRayLenght: 0.2
+  IsFallingRayLenght: 0.5
   IsMoving: 0
+  IsSprinting: 0
+  IsCrouching: 0
+  IsGrounded: 0
+  IsJumping: 0
+  IsFalling: 0
 --- !u!114 &1082423425600635503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1681,6 +1695,37 @@ Transform:
   m_Children:
   - {fileID: 3131973816963661236}
   m_Father: {fileID: 8655601856911540881}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4502355313603296914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1933067327428556313}
+  m_Layer: 3
+  m_Name: GroundedRay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1933067327428556313
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4502355313603296914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2852036245433039478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4832235360697342249
 GameObject:
